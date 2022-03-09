@@ -11,24 +11,24 @@ char pilih;
     struct Node* head = NULL;//Node head yang tidak mempunyai nilai /NULL
     beginning(&head);//eksekusi ke void beginning dengan mengirim &head 
     display(head);//menampilkan node
-    ending(&head);//eksekusi ke void ending dengan mengirim &head
-    display(head);//menampilkan node
     insertafter(head);
+    display(head);//menampilkan node
+    ending(&head);//eksekusi ke void ending dengan mengirim &head
     display(head);//menampilkan node
     printf("\ndelete index 2? Y/N=");
     scanf(" %c", &pilih);
     if(pilih=='Y'||pilih=='y'){
     deleteNode(&head, head->next->next);//pengapusan node pada index 2
     getchar();
+    printf("\n index 2 berhasil didelete\n");
     }
+    else printf("anda tidak menghapus index ke 2\n");
     display(head);//menampilkan node
-    printf("\n index 2 berhasil dideleteNode");
-
 }
 
 void display(struct Node* node){
-    while (node!=NULL){
-    printf("%d ",node->input);//perulangan untuk print isi dari input
+    while (node!=NULL){//jika node tidak sama null maka
+    printf("%d ",node->input);//perulangan untuk menamilkan nilai input dari node
     node = node->next;
     }
 }
@@ -40,12 +40,12 @@ void beginning(struct Node** head_ref){
     scanf("%d",&new_input);
     struct Node* new_node=(struct Node*)malloc(sizeof(struct Node));//membuat alokasi node
     new_node->input=new_input;//nilai new_input dimasukkan ke input dari new node
-    new_node->next=(*head_ref);//next dari new_node sebagai head_ref 
+    new_node->next=(*head_ref);//next dari new_node adalah *head_ref 
     new_node->prev=NULL;//new node pada prev tidak mempunyai nilai(null)
  
-    if((*head_ref)!=NULL)//jika head harus memiliki nilai maka 
-    (*head_ref)->prev=new_node;//ganti prev dari head rev menjadi new_node
-    (*head_ref)=new_node;//new_node menjadi head ref 
+    if((*head_ref)!=NULL)//jika head tidak sama dengan null 
+    (*head_ref)->prev=new_node;//ganti prev dari *head_ref menjadi new_node
+    (*head_ref)=new_node;//setiap ada node baru akan menjadi *head_ref
     printf("again?Y/N=");
     scanf(" %c",&choice);
     getchar();
@@ -60,18 +60,18 @@ void ending(struct Node** head_ref){
    struct Node* new_node=(struct Node*)malloc(sizeof(struct Node));//membuat alokasi node
     struct Node *last =*head_ref;
     new_node->input=new_input;//nilai new_input dimasukkan ke input dari new_node
-    new_node->next=NULL;//node baru next tidak mempunyai nilai 
+    new_node->next=NULL;//next dari new_node tidak mempunyai nilai (NULL)
     if(*head_ref==NULL){//jika head_ref tidak mempunyai nilai maka head ref menjadi new_node 
         new_node->prev=NULL;
         *head_ref=new_node;
         return;
     }
-        while (last->next!= NULL){
+        while (last->next!= NULL){//perulangan untuk memindahkan node sampai akhir
         last =last->next;
           }
     
-    last->next=new_node;//jika ada dara baru yang diinputkan maka akan menjadi next dari last;
-    new_node->prev=last;//last node dimana prev nya adalah new_node
+    last->next=new_node;//ubah next menjadi last node
+    new_node->prev=last;//Jadikan last sebagai prev dari new_node
     printf("again?Y/N=");
     scanf(" %c",&choice);
 }
@@ -87,24 +87,22 @@ void insertafter(struct Node* prev_node){
     struct Node* new_node =(struct Node*)malloc(sizeof(struct Node));//membuat alokasi new_node
     printf("\ninsert after begin=");
     scanf("%d",&new_input);
-    new_node->input=new_input;//nilai dari input diberikan ke input dari new_node
-    new_node->next=prev_node->next;//next dari node baru diberi prev_node->next
-    prev_node->next=new_node;//next dari prev_node adalah new_node
-    new_node->prev=new_node;//prev dari new_node adalah new_node
-    if(new_node->next!=NULL)//jika next dari new_node tidak boleh mempunyai nilai maka
-    new_node->next->prev=new_node;//prev dan next dari new_node adalah new_node(node baru)
-    printf("again?Y/N");
+    new_node->input=new_input;//nilai dari new_input diberikan ke input dari new_node
+    new_node->next=prev_node->next;//lanjutan next dari_new_Node adalah next dari prev_node
+    prev_node->next=new_node;//lanjutan next dari prev_node adalah new_node
+    new_node->prev=prev_node;//sambungkan prev dari new_node ke prev_node
+    if(new_node->next!=NULL)//jika next dari new_node tidak sama dengan null maka
+    new_node->next->prev=new_node;//ubah prev dari new_node ke new_node berikutnya
+    printf("again?Y/N=");
     scanf(" %c",&choice);
         getchar();
+        
     } 
 }
 void deleteNode(struct Node** head,struct Node* deleteNode_node){
     if(*head==NULL||deleteNode_node==NULL)//jika head dan deleteNode_node tidak memiliki nilai maka return
         return;
-    if(deleteNode_node->prev!=NULL)//jika prev dari deleteNode_node harus memiliki nilai maka 
-        deleteNode_node->prev->next=deleteNode_node->next;//next dan prev dari deleteNode node next dari deleteNode_node(data sebelumnya)
+    if(deleteNode_node->prev!=NULL)//jika prev dari deleteNode_node tidak sama dengan null
+        deleteNode_node->prev->next=deleteNode_node->next;//jika bukan node pertama maka dapat menghapus node berikutnya
       free(deleteNode_node);
 }
-
-
-
